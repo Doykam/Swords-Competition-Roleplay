@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ห้องทอยเต๋า</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=IBM+Plex+Sans+Thai:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+
+  <!-- PapaParse: ไลบรารีอ่านไฟล์ CSV จาก Google Sheet ให้กลายเป็นข้อมูลที่ JavaScript ใช้ได้ -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+</head>
+<body>
+
+  <div class="brand">
+      <img src="image/logo.png" alt="โลโก้" class="brand-logo" onerror="this.style.display='none'">
+      <span class="brand-title">Swords Competition</span>
+    </div>
+  </nav>
+
+  <!-- แถบลิงก์เลื่อนไปแต่ละส่วนของหน้า (ไม่ได้เปลี่ยนไฟล์ แค่เลื่อนในหน้าเดียว) -->
+  <nav class="top-nav">
+    <a href="#characters-section">ตัวละคร</a>
+    <a href="#dice-section">ทอยเต๋า</a>
+  </nav>
+
+  <img src="image/background.jpg" alt="Background" class="background">
+
+  <!-- ===================== ส่วนที่ 2: ทอยเต๋า ===================== -->
+  
+  <section id="dice-section" class="section dice-section">
+    <!-- ชื่อส่วน + คำแนะนำสั้น ๆ ก่อนถึงส่วนทอย -->
+    <div class="dice-head">
+      <h2>ทอยเต๋า</h2>
+      <p class="dice-intro">เลือกตัวละครที่แถบด้านบน เลือกโหมดการทอย แล้วกดปุ่มได้เลย หรือจะกำหนดเต๋าเองก็ได้ เช่น 2d6+3</p>
+    </div>
+
+    <div class="dice-panel">
+      <div class="control-group">
+        <label for="characterSelect">ตัวละครที่ทอย</label>
+        <select id="characterSelect">
+          <option value="">ไม่เลือกตัวละคร</option>
+        </select>
+      </div>
+
+      <div class="control-group">
+        <label>โหมดการทอย</label>
+        <div class="mode-row">
+          <button class="mode-btn active" data-mode="normal">ปกติ</button>
+          <button class="mode-btn" data-mode="advantage">Advantage</button>
+          <button class="mode-btn" data-mode="disadvantage">Disadvantage</button>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <label>ทอย</label>
+        <!-- ปุ่มทอยทั้งหมดถูกสร้างโดย dice.js -->
+        <div id="rollButtons" class="roll-buttons"></div>
+      </div>
+
+       <div class="control-group">
+        <label>ทอยเต๋าแบบกำหนดเอง</label>
+        <div class="custom-row">
+          <input id="diceCount" type="number" min="1" max="50" value="1" aria-label="จำนวนลูกเต๋า">
+          <span class="custom-d">d</span>
+          <select id="diceSides" aria-label="จำนวนหน้าเต๋า">
+            <option value="4">4</option>
+            <option value="6">6</option>
+            <option value="8">8</option>
+            <option value="10">10</option>
+            <option value="12">12</option>
+            <option value="20" selected>20</option>
+          </select>
+          <input id="customSides" type="number" min="2" max="1000" value="6" aria-label="จำนวนหน้าเต๋าแบบกำหนดเอง" hidden>
+          <span class="custom-plus">โบนัส</span>
+          <input id="diceBonus" type="number" min="-100" max="100" value="0" aria-label="โบนัสที่บวกเพิ่ม">
+          <button id="customRollBtn" type="button">ทอย</button>
+        </div>
+        <div id="customPreview" class="custom-preview">1d20</div>
+      </div>
+
+      <div id="rollResult" class="roll-result">
+        <div class="result-hint">เลือกโหมดแล้วกดปุ่มทอยได้เลย</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== ส่วนที่ 1: ตัวละคร ===================== -->
+  <section id="characters-section" class="section">
+    <h2>ตัวละคร</h2>
+    <input id="searchInput" class="search-input" type="text" placeholder="ค้นหาชื่อตัวละคร">
+
+    <!-- การ์ดตัวละครทุกใบถูกสร้างที่นี่โดย characters.js -->
+    <div id="characterList" class="character-list"></div>
+  </section>
+
+  <footer>Swords competition · WEBSITE FOR ROLE-PLAY ONLY</footer>
+
+  <!-- ลำดับสำคัญ: config -> dice -> characters
+       (characters.js เรียกใช้ฟังก์ชันจาก dice.js และค่าจาก sheet-config.js) -->
+  <script src="sheet-config.js"></script>
+  <script src="dice.js"></script>
+  <script src="characters.js"></script>
+</body>
+</html>
